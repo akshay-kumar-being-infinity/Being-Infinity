@@ -1,0 +1,21 @@
+import { Routes, Route, Outlet } from 'react-router-dom';
+import Home from './pages/Home';
+import About from './pages/Contact';
+import Login from './pages/Login';
+import Navbar from './components/Navbar';
+
+function App() {
+  return (
+    <div className="">
+      <Navbar />
+      <Outlet />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/contact" element={<About />} />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </div>
+  );
+}
+
+export default App;

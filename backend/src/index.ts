@@ -4,6 +4,9 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js'
 import authRoutes from './routes/authRoutes.js';
+import cors from 'cors';
+import swaggerJsdoc from 'swagger-jsdoc';
+import swaggerUi from 'swagger-ui-express';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -12,9 +15,18 @@ const app: Express = express();
 
 const PORT = process.env.PORT ? parseInt(process.env.PORT) : 3000;
 
-// Middleware
-import cors from 'cors';
+// Swagger Set Up
+const options = {
+  definition: {
+    openapi: '3.0.0',
+    info: { title: 'Being Infinity API', version: '1.0' }
+  },
+  apis: ['./src/routes/*.ts'] // Scans YOUR routes!
+};
+const specs = swaggerJsdoc(options);
 
+// Middleware
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use(cors({
   origin: [
     "http://localhost:5173",     // Vite dev
@@ -23,7 +35,6 @@ app.use(cors({
   ],
   credentials: true
 }));
-
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.json({ limit: '10mb' }));
