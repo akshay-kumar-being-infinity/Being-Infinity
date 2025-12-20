@@ -1,1 +1,30 @@
+@config "../tailwind.config.ts";
 @import "tailwindcss";
+
+:root {
+  --bg-dark: 0 0% 0%;
+  --bg-surface: 0 0% 5%;
+  --bg-elevated: 0 0% 10%;
+
+  --border: 0 0% 40%;
+
+  --text-primary: 0 0% 95%;
+  --text-muted: 0 0% 70%;
+
+  --primary-dark: 78 48% 22%;
+  --primary-light: 76 80% 54%;
+}
+
+/* .light {
+    --bg-dark: 0 0% 90%;
+  --bg-surface: 0 0% 95%;
+  --bg-elevated: 0 0% 100%;
+
+  --border: 0 0% 80%;
+
+  --text-primary: 0 0% 5%;
+  --text-muted: 0 0% 30%;
+
+  --primary-dark: 78 48% 22%;
+  --primary-light: 76 80% 54%;
+} */
