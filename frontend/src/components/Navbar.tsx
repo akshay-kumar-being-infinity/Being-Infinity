@@ -65,7 +65,7 @@ export default function Navbar() {
                   : 'text-gray-700 hover:text-green-600 hover:bg-green-50'
               }`}
             >
-              Course
+              Contact
             </Link>
 
             {user ? (
