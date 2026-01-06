@@ -1,7 +1,18 @@
 import logo from "../assets/logo.png";
 export default function Login() {
   const handleGoogleLogin = () => {
-    console.log("Logging in with Google...");
+    const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+    const redirectUri = import.meta.env.VITE_REDIRECT_URI;
+    
+    // Define the scopes.
+    const scope = 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email';
+    
+    // Construct the Google OAuth URL.
+    const targetUrl = `https://accounts.google.com/o/oauth2/v2/auth?redirect_uri=${encodeURIComponent(redirectUri)}&prompt=consent&response_type=token&client_id=${googleClientId}&scope=${encodeURIComponent(scope)}`;
+
+    // Redirect the browser to Google
+    console.log("Redirecting to:", targetUrl);
+    window.location.href = targetUrl;
   };
 
   return (
