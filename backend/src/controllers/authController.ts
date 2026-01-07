@@ -11,6 +11,7 @@ interface GooglePayload {
   email?: string | null;
   given_name?: string | null;
   family_name?: string | null;
+  picture?: string | null;
   email_verified?: boolean | null;
 }
 
@@ -71,9 +72,11 @@ export async function googleAuth(req: Request, res: Response): Promise<void> {
         id: user.id.toString(),
         email: user.email,
         name: user.name || null,
+        picture: payload.picture || null,  // ✅ ADD THIS LINE
         role: user.role,
       },
     });
+    
   } catch (error) {
     console.error('Google auth error:', error);
     res.status(500).json({ 
