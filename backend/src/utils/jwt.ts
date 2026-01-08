@@ -3,7 +3,7 @@ import { Role } from '../generated/prisma/client.js'
 
 export interface UserPayload {
   userId: string;
-  email?: string;
+  email?: string | null;
   role?: Role;
 }
 
