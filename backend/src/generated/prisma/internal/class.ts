@@ -20,7 +20,7 @@ const config: runtime.GetPrismaClientConfig = {
   "clientVersion": "7.2.0",
   "engineVersion": "0c8ef2ce45c83248ab3df073180d5eda9e8be7a3",
   "activeProvider": "postgresql",
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nenum Role {\n  USER\n  ADMIN\n}\n\nmodel User {\n  id             BigInt @id @default(autoincrement())\n  email          String @unique\n  provider       String // 'google' for now, later 'github', 'linkedin', etc.\n  providerUserId String @unique // Google sub, GitHub id, etc.\n\n  name          String?\n  emailVerified Boolean @default(false)\n\n  role     Role    @default(USER)\n  isActive Boolean @default(true)\n\n  createdAt DateTime @default(now())\n  updatedAt DateTime @updatedAt\n}\n",
+  "inlineSchema": "generator client {\n  provider = \"prisma-client\"\n  output   = \"../generated/prisma\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n}\n\nmodel User {\n  id             BigInt       @id @default(autoincrement())\n  email          String?\n  provider       String\n  providerUserId String       @unique\n  name           String?\n  emailVerified  Boolean      @default(false)\n  role           Role         @default(USER)\n  isActive       Boolean      @default(true)\n  createdAt      DateTime     @default(now())\n  updatedAt      DateTime     @updatedAt\n  profile        Profile?\n  enrollments    Enrollment[]\n  submissions    Submission[] // ✅ FIXED: Back-relation\n\n  @@index([provider, providerUserId])\n  @@map(\"users\")\n}\n\nmodel Profile {\n  id                 BigInt   @id @default(autoincrement())\n  githubUsername     String?\n  leetcodeUsername   String?\n  codeforcesUsername String?\n  codechefUsername   String?\n  mentorpickUsername String?\n  phoneNumber        String?\n  createdAt          DateTime @default(now())\n  updatedAt          DateTime @updatedAt\n  userId             BigInt   @unique\n  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)\n\n  @@map(\"profiles\")\n}\n\nmodel Course {\n  id              BigInt       @id @default(autoincrement())\n  slug            String       @unique\n  title           String\n  description     String?\n  thumbnail       String?\n  durationMinutes Int?\n  isPublished     Boolean      @default(true)\n  createdAt       DateTime     @default(now())\n  updatedAt       DateTime     @updatedAt\n  sections        Section[]\n  enrollments     Enrollment[]\n\n  @@map(\"courses\")\n}\n\nmodel Section {\n  id               BigInt        @id @default(autoincrement())\n  title            String\n  order            Int\n  estimatedMinutes Int?\n  courseId         BigInt\n  course           Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)\n  content          ContentItem[]\n  submissions      Submission[]\n\n  @@unique([courseId, order])\n  @@map(\"sections\")\n}\n\nmodel ContentItem {\n  id            BigInt      @id @default(autoincrement())\n  type          ContentType\n  title         String\n  data          Json\n  estimatedMins Int?\n  likes         Int         @default(0)\n  dislikes      Int         @default(0)\n  order         Int\n  sectionId     BigInt\n  section       Section     @relation(fields: [sectionId], references: [id], onDelete: Cascade)\n\n  @@index([sectionId, order])\n  @@map(\"content_items\")\n}\n\nmodel Enrollment {\n  id          BigInt    @id @default(autoincrement())\n  userId      BigInt\n  courseId    BigInt\n  enrolledAt  DateTime  @default(now())\n  progress    Float     @default(0)\n  completedAt DateTime?\n  user        User      @relation(fields: [userId], references: [id])\n  course      Course    @relation(fields: [courseId], references: [id])\n\n  @@unique([userId, courseId])\n  @@index([courseId])\n  @@index([userId])\n  @@map(\"enrollments\")\n}\n\nmodel Submission {\n  id        BigInt    @id @default(autoincrement())\n  userId    BigInt\n  contentId BigInt?\n  sectionId BigInt\n  courseId  BigInt\n  isSolved  Boolean   @default(false)\n  solvedAt  DateTime? @updatedAt\n  user      User      @relation(fields: [userId], references: [id])\n  section   Section   @relation(fields: [sectionId], references: [id])\n\n  @@index([courseId, userId])\n  @@index([sectionId, userId])\n  @@index([contentId, userId])\n  @@map(\"submissions\")\n}\n\nenum Role {\n  USER\n  ADMIN\n}\n\nenum ContentType {\n  VIDEO\n  ARTICLE\n  PROBLEM\n}\n",
   "runtimeDataModel": {
     "models": {},
     "enums": {},
@@ -28,7 +28,7 @@ const config: runtime.GetPrismaClientConfig = {
   }
 }
 
-config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emailVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"}],\"dbName\":null}},\"enums\":{},\"types\":{}}")
+config.runtimeDataModel = JSON.parse("{\"models\":{\"User\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"email\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"provider\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"providerUserId\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"name\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"emailVerified\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"role\",\"kind\":\"enum\",\"type\":\"Role\"},{\"name\":\"isActive\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"profile\",\"kind\":\"object\",\"type\":\"Profile\",\"relationName\":\"ProfileToUser\"},{\"name\":\"enrollments\",\"kind\":\"object\",\"type\":\"Enrollment\",\"relationName\":\"EnrollmentToUser\"},{\"name\":\"submissions\",\"kind\":\"object\",\"type\":\"Submission\",\"relationName\":\"SubmissionToUser\"}],\"dbName\":\"users\"},\"Profile\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"githubUsername\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"leetcodeUsername\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"codeforcesUsername\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"codechefUsername\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"mentorpickUsername\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"phoneNumber\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"ProfileToUser\"}],\"dbName\":\"profiles\"},\"Course\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"slug\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"description\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"thumbnail\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"durationMinutes\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"isPublished\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"createdAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"updatedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"sections\",\"kind\":\"object\",\"type\":\"Section\",\"relationName\":\"CourseToSection\"},{\"name\":\"enrollments\",\"kind\":\"object\",\"type\":\"Enrollment\",\"relationName\":\"CourseToEnrollment\"}],\"dbName\":\"courses\"},\"Section\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"order\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"estimatedMinutes\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"courseId\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"course\",\"kind\":\"object\",\"type\":\"Course\",\"relationName\":\"CourseToSection\"},{\"name\":\"content\",\"kind\":\"object\",\"type\":\"ContentItem\",\"relationName\":\"ContentItemToSection\"},{\"name\":\"submissions\",\"kind\":\"object\",\"type\":\"Submission\",\"relationName\":\"SectionToSubmission\"}],\"dbName\":\"sections\"},\"ContentItem\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"type\",\"kind\":\"enum\",\"type\":\"ContentType\"},{\"name\":\"title\",\"kind\":\"scalar\",\"type\":\"String\"},{\"name\":\"data\",\"kind\":\"scalar\",\"type\":\"Json\"},{\"name\":\"estimatedMins\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"likes\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"dislikes\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"order\",\"kind\":\"scalar\",\"type\":\"Int\"},{\"name\":\"sectionId\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"section\",\"kind\":\"object\",\"type\":\"Section\",\"relationName\":\"ContentItemToSection\"}],\"dbName\":\"content_items\"},\"Enrollment\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"courseId\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"enrolledAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"progress\",\"kind\":\"scalar\",\"type\":\"Float\"},{\"name\":\"completedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"EnrollmentToUser\"},{\"name\":\"course\",\"kind\":\"object\",\"type\":\"Course\",\"relationName\":\"CourseToEnrollment\"}],\"dbName\":\"enrollments\"},\"Submission\":{\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"userId\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"contentId\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"sectionId\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"courseId\",\"kind\":\"scalar\",\"type\":\"BigInt\"},{\"name\":\"isSolved\",\"kind\":\"scalar\",\"type\":\"Boolean\"},{\"name\":\"solvedAt\",\"kind\":\"scalar\",\"type\":\"DateTime\"},{\"name\":\"user\",\"kind\":\"object\",\"type\":\"User\",\"relationName\":\"SubmissionToUser\"},{\"name\":\"section\",\"kind\":\"object\",\"type\":\"Section\",\"relationName\":\"SectionToSubmission\"}],\"dbName\":\"submissions\"}},\"enums\":{},\"types\":{}}")
 
 async function decodeBase64AsWasm(wasmBase64: string): Promise<WebAssembly.Module> {
   const { Buffer } = await import('node:buffer')
@@ -183,6 +183,66 @@ export interface PrismaClient<
     * ```
     */
   get user(): Prisma.UserDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.profile`: Exposes CRUD operations for the **Profile** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Profiles
+    * const profiles = await prisma.profile.findMany()
+    * ```
+    */
+  get profile(): Prisma.ProfileDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.course`: Exposes CRUD operations for the **Course** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Courses
+    * const courses = await prisma.course.findMany()
+    * ```
+    */
+  get course(): Prisma.CourseDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.section`: Exposes CRUD operations for the **Section** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Sections
+    * const sections = await prisma.section.findMany()
+    * ```
+    */
+  get section(): Prisma.SectionDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.contentItem`: Exposes CRUD operations for the **ContentItem** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ContentItems
+    * const contentItems = await prisma.contentItem.findMany()
+    * ```
+    */
+  get contentItem(): Prisma.ContentItemDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.enrollment`: Exposes CRUD operations for the **Enrollment** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Enrollments
+    * const enrollments = await prisma.enrollment.findMany()
+    * ```
+    */
+  get enrollment(): Prisma.EnrollmentDelegate<ExtArgs, { omit: OmitOpts }>;
+
+  /**
+   * `prisma.submission`: Exposes CRUD operations for the **Submission** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Submissions
+    * const submissions = await prisma.submission.findMany()
+    * ```
+    */
+  get submission(): Prisma.SubmissionDelegate<ExtArgs, { omit: OmitOpts }>;
 }
 
 export function getPrismaClientClass(): PrismaClientConstructor {

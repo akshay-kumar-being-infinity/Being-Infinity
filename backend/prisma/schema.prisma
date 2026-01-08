@@ -8,34 +8,119 @@ datasource db {
 }
 
 model User {
-  id             BigInt   @id @default(autoincrement())
-  email          String
+  id             BigInt       @id @default(autoincrement())
+  email          String?
   provider       String
-  providerUserId String  @unique
+  providerUserId String       @unique
   name           String?
-  emailVerified  Boolean  @default(false)
-  role           Role     @default(USER)
-  isActive       Boolean  @default(true)
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  emailVerified  Boolean      @default(false)
+  role           Role         @default(USER)
+  isActive       Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
   profile        Profile?
+  enrollments    Enrollment[]
+  submissions    Submission[]  // ✅ FIXED: Back-relation
+  @@map("users")
+  @@index([provider, providerUserId])
 }
 
 model Profile {
-  id                 BigInt   @id @default(autoincrement())
-  githubUsername     String?
-  leetcodeUsername   String?
-  codeforcesUsername String?
-  codechefUsername   String?
-  mentorpickUsername String?
-  phoneNumber        String?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  userId             BigInt   @unique
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                    BigInt      @id @default(autoincrement())
+  githubUsername        String?
+  leetcodeUsername      String?
+  codeforcesUsername    String?
+  codechefUsername      String?
+  mentorpickUsername    String?
+  phoneNumber           String?
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+  userId                BigInt      @unique
+  user                  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@map("profiles")
+}
+
+model Course {
+  id             BigInt       @id @default(autoincrement())
+  slug           String       @unique
+  title          String
+  description    String?
+  thumbnail      String?
+  durationMinutes Int?
+  isPublished    Boolean      @default(true)
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  sections       Section[]
+  enrollments    Enrollment[]
+  @@map("courses")
+}
+
+model Section {
+  id               BigInt        @id @default(autoincrement())
+  title            String
+  order            Int
+  estimatedMinutes Int?
+  courseId         BigInt
+  course           Course        @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  content          ContentItem[]
+  submissions      Submission[]
+  @@unique([courseId, order])
+  @@map("sections")
+}
+
+model ContentItem {
+  id             BigInt         @id @default(autoincrement())
+  type           ContentType
+  title          String
+  data           Json
+  estimatedMins  Int?
+  likes          Int            @default(0)
+  dislikes       Int            @default(0)
+  order          Int
+  sectionId      BigInt
+  section        Section        @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  @@map("content_items")
+  @@index([sectionId, order])
+}
+
+model Enrollment {
+  id           BigInt    @id @default(autoincrement())
+  userId       BigInt
+  courseId     BigInt
+  enrolledAt   DateTime  @default(now())
+  progress     Float     @default(0)
+  completedAt  DateTime?
+  user         User      @relation(fields: [userId], references: [id])
+  course       Course    @relation(fields: [courseId], references: [id])
+  @@unique([userId, courseId])
+  @@index([courseId])
+  @@index([userId])
+  @@map("enrollments")
+}
+
+model Submission {
+  id          BigInt    @id @default(autoincrement())
+  userId      BigInt
+  contentId   BigInt?
+  sectionId   BigInt
+  courseId    BigInt
+  isSolved    Boolean   @default(false)
+  solvedAt    DateTime? @updatedAt
+  user        User      @relation(fields: [userId], references: [id])
+  section     Section    @relation(fields: [sectionId], references: [id])
+  @@index([courseId, userId])
+  @@index([sectionId, userId])
+  @@index([contentId, userId])
+  @@map("submissions")
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+enum ContentType {
+  VIDEO
+  ARTICLE
+  PROBLEM
 }

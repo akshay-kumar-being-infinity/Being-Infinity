@@ -2,7 +2,6 @@ import { prisma } from '../lib/prisma.js';
 import { signJwt } from '../utils/jwt.js';
 import { OAuth2Client } from 'google-auth-library';
 import { Request, Response } from 'express';
-import { Role } from '../generated/prisma/client.js'
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID!);
 
@@ -35,22 +34,21 @@ export async function googleAuth(req: Request, res: Response): Promise<void> {
       return;
     }
 
-    // ✅ Type-safe fallbacks - Prisma requires string
     const providerUserId = payload.sub;
     const email = payload.email ?? `google_${providerUserId}@fallback.com`;
-    const name = payload.given_name || payload.family_name 
-      ? `${payload.given_name || ''} ${payload.family_name || ''}`.trim() || `Google User ${providerUserId.slice(-8)}`
-      : `Google User ${providerUserId.slice(-8)}`;
+    const name = payload.given_name || payload.family_name
+      ? `${payload.given_name || ''} ${payload.family_name || ''}`.trim()
+      : null;
 
     const user = await prisma.user.upsert({
-      where: { providerUserId },
+      where: { providerUserId },  // ✅ Back to original - providerUserId is @unique
       create: {
         email,
         provider: 'google',
         providerUserId,
         name,
         emailVerified: Boolean(payload.email_verified),
-        role: Role.USER,
+        role: 'USER',
         isActive: true,
       },
       update: {
@@ -71,17 +69,17 @@ export async function googleAuth(req: Request, res: Response): Promise<void> {
       user: {
         id: user.id.toString(),
         email: user.email,
-        name: user.name || null,
-        picture: payload.picture || null,  // ✅ ADD THIS LINE
+        name: user.name,
+        picture: payload.picture || null,
         role: user.role,
       },
     });
-    
+
   } catch (error) {
     console.error('Google auth error:', error);
-    res.status(500).json({ 
+    res.status(500).json({
       success: false,
-      message: 'Authentication failed' 
+      message: 'Authentication failed'
     });
   }
 }
