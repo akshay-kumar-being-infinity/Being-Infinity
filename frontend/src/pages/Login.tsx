@@ -57,7 +57,7 @@ export default function Login() {
           });
           window.google.accounts.id.renderButton(
             googleButtonRef.current,
-            { theme: 'filled_black', size: 'large', type: 'standard', text: 'signin_with', shape: 'pill', logo_alignment: 'left', width: 250}
+            { theme: 'filled_black', size: 'large', type: 'standard', text: 'signin_with', shape: 'pill', logo_alignment: 'left'}
           );
         }
       };
