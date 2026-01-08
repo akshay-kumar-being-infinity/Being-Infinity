@@ -5,13 +5,13 @@ import { Request, Response } from 'express';
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID!);
 
-interface GooglePayload {
+interface GoogleUser {
   sub: string;
   email?: string | null;
-  given_name?: string | null;
-  family_name?: string | null;
+  givenName?: string | null;
+  familyName?: string | null;
   picture?: string | null;
-  email_verified?: boolean | null;
+  emailVerified?: boolean | null;
 }
 
 export async function googleAuth(req: Request, res: Response): Promise<void> {
@@ -28,32 +28,45 @@ export async function googleAuth(req: Request, res: Response): Promise<void> {
       audience: process.env.GOOGLE_CLIENT_ID!,
     });
 
-    const payload = ticket.getPayload() as GooglePayload | null;
-    if (!payload?.sub) {
+    const rawPayload = ticket.getPayload();
+    if (!rawPayload?.sub) {
       res.status(401).json({ message: 'Invalid Google token' });
       return;
     }
 
-    const providerUserId = payload.sub;
-    const email = payload.email ?? `google_${providerUserId}@fallback.com`;
-    const name = payload.given_name || payload.family_name
-      ? `${payload.given_name || ''} ${payload.family_name || ''}`.trim()
-      : null;
+    // 🔹 Map snake_case → camelCase ONCE
+    const googleUser: GoogleUser = {
+      sub: rawPayload.sub,
+      email: rawPayload.email ?? null,
+      givenName: rawPayload.given_name ?? null,
+      familyName: rawPayload.family_name ?? null,
+      picture: rawPayload.picture ?? null,
+      emailVerified: rawPayload.email_verified ?? null,
+    };
+
+    const providerUserId = googleUser.sub;
+    const email =
+      googleUser.email ?? `google_${providerUserId}@fallback.com`;
+
+    const name =
+      googleUser.givenName || googleUser.familyName
+        ? `${googleUser.givenName || ''} ${googleUser.familyName || ''}`.trim()
+        : null;
 
     const user = await prisma.user.upsert({
-      where: { providerUserId },  // ✅ Back to original - providerUserId is @unique
+      where: { providerUserId },
       create: {
         email,
         provider: 'google',
         providerUserId,
         name,
-        emailVerified: Boolean(payload.email_verified),
+        emailVerified: Boolean(googleUser.emailVerified),
         role: 'USER',
         isActive: true,
       },
       update: {
         name,
-        emailVerified: Boolean(payload.email_verified),
+        emailVerified: Boolean(googleUser.emailVerified),
       },
     });
 
@@ -70,16 +83,15 @@ export async function googleAuth(req: Request, res: Response): Promise<void> {
         id: user.id.toString(),
         email: user.email,
         name: user.name,
-        picture: payload.picture || null,
+        picture: googleUser.picture,
         role: user.role,
       },
     });
-
   } catch (error) {
     console.error('Google auth error:', error);
     res.status(500).json({
       success: false,
-      message: 'Authentication failed'
+      message: 'Authentication failed',
     });
   }
 }

@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js'
 import authRoutes from './routes/authRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
 import cors from 'cors';
 import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
@@ -40,8 +41,9 @@ app.use(express.json());
 app.use(express.json({ limit: '10mb' }));
 
 // Routes
-app.use('/user', userRoutes)
-app.use('/auth', authRoutes);
+app.use('/api/user', userRoutes)
+app.use('/api/auth', authRoutes);
+app.use('/api/profiles', profileRoutes)
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
