@@ -7,7 +7,7 @@ const userRouter = Router()
 userRouter.get('/all', 
   /**
    * @swagger
-   * /users/all:
+   * /api/users/all:
    *   get:
    *     summary: Get all users (Public - Latest first)
    *     tags: [Users]
@@ -68,7 +68,7 @@ userRouter.get('/all',
 userRouter.get('/create', requireAuth, 
   /**
    * @swagger
-   * /users/create:
+   * /api/users/create:
    *   get:
    *     summary: Create random test user (Authenticated)
    *     tags: [Users]

@@ -6,7 +6,7 @@ const authRouter = Router();
 authRouter.post('/google', 
   /**
    * @swagger
-   * /auth/google:
+   * /api/auth/google:
    *   post:
    *     summary: Google OAuth Login/Register
    *     tags: [Auth]

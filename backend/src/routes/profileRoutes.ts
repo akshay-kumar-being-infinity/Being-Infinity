@@ -9,7 +9,7 @@ profileRouter.post('/create',
   requireAuth,  // ✅ Your auth middleware
   /**
    * @swagger
-   * /profiles/create:
+   * /api/profiles/create:
    *   post:
    *     summary: Create User Profile
    *     tags: [Profiles]
@@ -61,7 +61,7 @@ profileRouter.get('/me',
   requireAuth,
   /**
    * @swagger
-   * /profiles/me:
+   * /api/profiles/me:
    *   get:
    *     summary: Get Own Profile
    *     tags: [Profiles]
@@ -101,7 +101,7 @@ profileRouter.put('/update',
   requireAuth,
   /**
    * @swagger
-   * /profiles/update:
+   * /api/profiles/update:
    *   put:
    *     summary: Update Own Profile
    *     tags: [Profiles]
