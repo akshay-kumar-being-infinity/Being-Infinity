@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BasePlatformVerifier } from "../BasePlatformVerifier";
 import { Modal } from "../../ui/Modal";
 import { Button } from "../../ui/Button";
+import { config } from '../../../config';
 
 interface CodeForcesVerifierProps {
   value: string;
@@ -28,7 +29,7 @@ export const CodeForcesVerifier: React.FC<CodeForcesVerifierProps> = ({ value, o
       <BasePlatformVerifier
         platformName="CodeForces"
         iconColorClass="text-red-500" 
-        loginUrl="https://codeforces.com/enter"
+        loginUrl={`${config.platforms.codeforcesUrl}/enter`}
         value={value}
         onChange={(val) => { setIsVerified(false); onChange(val); }}
         onVerify={() => setShowModal(true)}

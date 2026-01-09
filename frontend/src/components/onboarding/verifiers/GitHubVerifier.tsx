@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BasePlatformVerifier } from "../BasePlatformVerifier";
 import { Modal } from "../../ui/Modal";
 import { Button } from "../../ui/Button";
+import { config } from '../../../config';
 
 interface GitHubVerifierProps {
   value: string;
@@ -28,7 +29,7 @@ export const GitHubVerifier: React.FC<GitHubVerifierProps> = ({ value, onChange 
       <BasePlatformVerifier
         platformName="GitHub"
         iconColorClass="text-gray-400"
-        loginUrl="https://github.com/login"
+        loginUrl={`${config.platforms.githubUrl}/login`}
         value={value}
         onChange={(val) => { setIsVerified(false); onChange(val); }}
         onVerify={() => setShowModal(true)}

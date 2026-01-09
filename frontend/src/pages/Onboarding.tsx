@@ -120,6 +120,7 @@ export const Onboarding: React.FC = () => {
     
     try {
       const token = localStorage.getItem("token");
+      //replace with written api.
       const response = await fetch("http://localhost:3000/api/user/onboarding", {
         method: "POST",
         headers: {
@@ -178,11 +179,11 @@ export const Onboarding: React.FC = () => {
 
             <div className="space-y-6">
               <div ref={firstNameRef}>
-                <Input label="First Name" placeholder="e.g. Akshay" value={formData.firstName} onChange={(e) => handleChange("firstName", e.target.value)} error={errors.firstName} />
+                <Input label="First Name" placeholder="Enter your first name" value={formData.firstName} onChange={(e) => handleChange("firstName", e.target.value)} error={errors.firstName} />
               </div>
 
               <div ref={lastNameRef}>
-                <Input label="Last Name" placeholder="e.g. Kumar" value={formData.lastName} onChange={(e) => handleChange("lastName", e.target.value)} error={errors.lastName} />
+                <Input label="Last Name" placeholder="Enter your last name" value={formData.lastName} onChange={(e) => handleChange("lastName", e.target.value)} error={errors.lastName} />
               </div>
 
               {/* MOVED PHONE NUMBER HERE (Before Student Checkbox) */}

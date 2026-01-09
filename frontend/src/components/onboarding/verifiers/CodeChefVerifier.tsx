@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BasePlatformVerifier } from "../BasePlatformVerifier";
 import { Modal } from "../../ui/Modal";
 import { Button } from "../../ui/Button";
+import { config } from '../../../config';
 
 interface CodeChefVerifierProps {
   value: string;
@@ -28,7 +29,7 @@ export const CodeChefVerifier: React.FC<CodeChefVerifierProps> = ({ value, onCha
       <BasePlatformVerifier
         platformName="CodeChef"
         iconColorClass="text-orange-900" 
-        loginUrl="https://www.codechef.com/login"
+        loginUrl={`${config.platforms.codechefUrl}/login`}
         value={value}
         onChange={(val) => { setIsVerified(false); onChange(val); }}
         onVerify={() => setShowModal(true)}

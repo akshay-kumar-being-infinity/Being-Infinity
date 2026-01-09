@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BasePlatformVerifier } from "../BasePlatformVerifier";
 import { Modal } from "../../ui/Modal";
 import { Button } from "../../ui/Button";
+import { config } from '../../../config';
 
 interface LinkedInVerifierProps {
   value: string;
@@ -28,7 +29,7 @@ export const LinkedInVerifier: React.FC<LinkedInVerifierProps> = ({ value, onCha
       <BasePlatformVerifier
         platformName="LinkedIn"
         iconColorClass="text-blue-600"
-        loginUrl="https://www.linkedin.com/login"
+        loginUrl={`${config.platforms.linkedinUrl}/login`}
         value={value}
         onChange={(val) => { setIsVerified(false); onChange(val); }}
         onVerify={() => setShowModal(true)}

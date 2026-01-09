@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BasePlatformVerifier } from "../BasePlatformVerifier";
 import { Modal } from "../../ui/Modal";
 import { Button } from "../../ui/Button";
+import { config } from '../../../config';
 
 interface LeetCodeVerifierProps {
   value: string;
@@ -33,7 +34,7 @@ export const LeetCodeVerifier: React.FC<LeetCodeVerifierProps> = ({ value, onCha
       <BasePlatformVerifier
         platformName="LeetCode"
         iconColorClass="text-yellow-500"
-        loginUrl="https://leetcode.com/accounts/login/"
+        loginUrl={`${config.platforms.leetcodeUrl}/accounts/login/`}
         value={value}
         onChange={(val) => { setIsVerified(false); onChange(val); }}
         onVerify={handleVerify}

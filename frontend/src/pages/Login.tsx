@@ -1,5 +1,6 @@
 import logo from "../assets/logo.png";
 import { useEffect, useCallback, useRef } from 'react';
+import { config } from '../config';
 
 declare global {
   interface Window {
@@ -15,7 +16,7 @@ export default function Login() {
     console.log('idToken sent to backend:', idToken?.slice(0, 20) + '...');
 
     try {
-      const res = await fetch('http://localhost:3000/auth/google', {
+      const res = await fetch(`${config.baseUrl}/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken }),

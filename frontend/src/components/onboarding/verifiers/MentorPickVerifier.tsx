@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BasePlatformVerifier } from "../BasePlatformVerifier";
 import { Modal } from "../../ui/Modal";
 import { Button } from "../../ui/Button";
+import { config } from '../../../config';
 
 interface MentorPickVerifierProps {
   value: string;
@@ -28,7 +29,7 @@ export const MentorPickVerifier: React.FC<MentorPickVerifierProps> = ({ value, o
       <BasePlatformVerifier
         platformName="MentorPick"
         iconColorClass="text-indigo-500" 
-        loginUrl="https://mentorpick.com/login"
+        loginUrl={`${config.platforms.mentorpickUrl}/login`}
         value={value}
         onChange={(val) => { setIsVerified(false); onChange(val); }}
         onVerify={() => setShowModal(true)}
