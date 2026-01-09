@@ -16,7 +16,7 @@ export default function Login() {
     console.log('idToken sent to backend:', idToken?.slice(0, 20) + '...');
 
     try {
-      const res = await fetch(`${config.baseUrl}/auth/google`, {
+      const res = await fetch(`${config.baseUrl}/api/auth/google`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken }),

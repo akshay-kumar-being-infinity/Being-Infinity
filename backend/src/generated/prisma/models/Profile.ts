@@ -38,12 +38,19 @@ export type ProfileSumAggregateOutputType = {
 
 export type ProfileMinAggregateOutputType = {
   id: bigint | null
+  firstName: string | null
+  lastName: string | null
+  countryCode: string | null
+  college: string | null
+  rollNumber: string | null
+  isStudent: boolean | null
+  phone: string | null
   githubUsername: string | null
+  linkedinUsername: string | null
   leetcodeUsername: string | null
   codeforcesUsername: string | null
   codechefUsername: string | null
   mentorpickUsername: string | null
-  phoneNumber: string | null
   createdAt: Date | null
   updatedAt: Date | null
   userId: bigint | null
@@ -51,12 +58,19 @@ export type ProfileMinAggregateOutputType = {
 
 export type ProfileMaxAggregateOutputType = {
   id: bigint | null
+  firstName: string | null
+  lastName: string | null
+  countryCode: string | null
+  college: string | null
+  rollNumber: string | null
+  isStudent: boolean | null
+  phone: string | null
   githubUsername: string | null
+  linkedinUsername: string | null
   leetcodeUsername: string | null
   codeforcesUsername: string | null
   codechefUsername: string | null
   mentorpickUsername: string | null
-  phoneNumber: string | null
   createdAt: Date | null
   updatedAt: Date | null
   userId: bigint | null
@@ -64,12 +78,19 @@ export type ProfileMaxAggregateOutputType = {
 
 export type ProfileCountAggregateOutputType = {
   id: number
+  firstName: number
+  lastName: number
+  countryCode: number
+  college: number
+  rollNumber: number
+  isStudent: number
+  phone: number
   githubUsername: number
+  linkedinUsername: number
   leetcodeUsername: number
   codeforcesUsername: number
   codechefUsername: number
   mentorpickUsername: number
-  phoneNumber: number
   createdAt: number
   updatedAt: number
   userId: number
@@ -89,12 +110,19 @@ export type ProfileSumAggregateInputType = {
 
 export type ProfileMinAggregateInputType = {
   id?: true
+  firstName?: true
+  lastName?: true
+  countryCode?: true
+  college?: true
+  rollNumber?: true
+  isStudent?: true
+  phone?: true
   githubUsername?: true
+  linkedinUsername?: true
   leetcodeUsername?: true
   codeforcesUsername?: true
   codechefUsername?: true
   mentorpickUsername?: true
-  phoneNumber?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -102,12 +130,19 @@ export type ProfileMinAggregateInputType = {
 
 export type ProfileMaxAggregateInputType = {
   id?: true
+  firstName?: true
+  lastName?: true
+  countryCode?: true
+  college?: true
+  rollNumber?: true
+  isStudent?: true
+  phone?: true
   githubUsername?: true
+  linkedinUsername?: true
   leetcodeUsername?: true
   codeforcesUsername?: true
   codechefUsername?: true
   mentorpickUsername?: true
-  phoneNumber?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -115,12 +150,19 @@ export type ProfileMaxAggregateInputType = {
 
 export type ProfileCountAggregateInputType = {
   id?: true
+  firstName?: true
+  lastName?: true
+  countryCode?: true
+  college?: true
+  rollNumber?: true
+  isStudent?: true
+  phone?: true
   githubUsername?: true
+  linkedinUsername?: true
   leetcodeUsername?: true
   codeforcesUsername?: true
   codechefUsername?: true
   mentorpickUsername?: true
-  phoneNumber?: true
   createdAt?: true
   updatedAt?: true
   userId?: true
@@ -215,12 +257,19 @@ export type ProfileGroupByArgs<ExtArgs extends runtime.Types.Extensions.Internal
 
 export type ProfileGroupByOutputType = {
   id: bigint
+  firstName: string | null
+  lastName: string | null
+  countryCode: string | null
+  college: string | null
+  rollNumber: string | null
+  isStudent: boolean | null
+  phone: string | null
   githubUsername: string | null
+  linkedinUsername: string | null
   leetcodeUsername: string | null
   codeforcesUsername: string | null
   codechefUsername: string | null
   mentorpickUsername: string | null
-  phoneNumber: string | null
   createdAt: Date
   updatedAt: Date
   userId: bigint
@@ -251,12 +300,19 @@ export type ProfileWhereInput = {
   OR?: Prisma.ProfileWhereInput[]
   NOT?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
   id?: Prisma.BigIntFilter<"Profile"> | bigint | number
+  firstName?: Prisma.StringNullableFilter<"Profile"> | string | null
+  lastName?: Prisma.StringNullableFilter<"Profile"> | string | null
+  countryCode?: Prisma.StringNullableFilter<"Profile"> | string | null
+  college?: Prisma.StringNullableFilter<"Profile"> | string | null
+  rollNumber?: Prisma.StringNullableFilter<"Profile"> | string | null
+  isStudent?: Prisma.BoolNullableFilter<"Profile"> | boolean | null
+  phone?: Prisma.StringNullableFilter<"Profile"> | string | null
   githubUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
+  linkedinUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
   leetcodeUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
   codeforcesUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
   codechefUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
   mentorpickUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
-  phoneNumber?: Prisma.StringNullableFilter<"Profile"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   userId?: Prisma.BigIntFilter<"Profile"> | bigint | number
@@ -265,12 +321,19 @@ export type ProfileWhereInput = {
 
 export type ProfileOrderByWithRelationInput = {
   id?: Prisma.SortOrder
+  firstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
+  countryCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  college?: Prisma.SortOrderInput | Prisma.SortOrder
+  rollNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  isStudent?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   githubUsername?: Prisma.SortOrderInput | Prisma.SortOrder
+  linkedinUsername?: Prisma.SortOrderInput | Prisma.SortOrder
   leetcodeUsername?: Prisma.SortOrderInput | Prisma.SortOrder
   codeforcesUsername?: Prisma.SortOrderInput | Prisma.SortOrder
   codechefUsername?: Prisma.SortOrderInput | Prisma.SortOrder
   mentorpickUsername?: Prisma.SortOrderInput | Prisma.SortOrder
-  phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -283,12 +346,19 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
   AND?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
   OR?: Prisma.ProfileWhereInput[]
   NOT?: Prisma.ProfileWhereInput | Prisma.ProfileWhereInput[]
+  firstName?: Prisma.StringNullableFilter<"Profile"> | string | null
+  lastName?: Prisma.StringNullableFilter<"Profile"> | string | null
+  countryCode?: Prisma.StringNullableFilter<"Profile"> | string | null
+  college?: Prisma.StringNullableFilter<"Profile"> | string | null
+  rollNumber?: Prisma.StringNullableFilter<"Profile"> | string | null
+  isStudent?: Prisma.BoolNullableFilter<"Profile"> | boolean | null
+  phone?: Prisma.StringNullableFilter<"Profile"> | string | null
   githubUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
+  linkedinUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
   leetcodeUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
   codeforcesUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
   codechefUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
   mentorpickUsername?: Prisma.StringNullableFilter<"Profile"> | string | null
-  phoneNumber?: Prisma.StringNullableFilter<"Profile"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Profile"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
@@ -296,12 +366,19 @@ export type ProfileWhereUniqueInput = Prisma.AtLeast<{
 
 export type ProfileOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
+  firstName?: Prisma.SortOrderInput | Prisma.SortOrder
+  lastName?: Prisma.SortOrderInput | Prisma.SortOrder
+  countryCode?: Prisma.SortOrderInput | Prisma.SortOrder
+  college?: Prisma.SortOrderInput | Prisma.SortOrder
+  rollNumber?: Prisma.SortOrderInput | Prisma.SortOrder
+  isStudent?: Prisma.SortOrderInput | Prisma.SortOrder
+  phone?: Prisma.SortOrderInput | Prisma.SortOrder
   githubUsername?: Prisma.SortOrderInput | Prisma.SortOrder
+  linkedinUsername?: Prisma.SortOrderInput | Prisma.SortOrder
   leetcodeUsername?: Prisma.SortOrderInput | Prisma.SortOrder
   codeforcesUsername?: Prisma.SortOrderInput | Prisma.SortOrder
   codechefUsername?: Prisma.SortOrderInput | Prisma.SortOrder
   mentorpickUsername?: Prisma.SortOrderInput | Prisma.SortOrder
-  phoneNumber?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -317,12 +394,19 @@ export type ProfileScalarWhereWithAggregatesInput = {
   OR?: Prisma.ProfileScalarWhereWithAggregatesInput[]
   NOT?: Prisma.ProfileScalarWhereWithAggregatesInput | Prisma.ProfileScalarWhereWithAggregatesInput[]
   id?: Prisma.BigIntWithAggregatesFilter<"Profile"> | bigint | number
+  firstName?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  lastName?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  countryCode?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  college?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  rollNumber?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  isStudent?: Prisma.BoolNullableWithAggregatesFilter<"Profile"> | boolean | null
+  phone?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   githubUsername?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
+  linkedinUsername?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   leetcodeUsername?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   codeforcesUsername?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   codechefUsername?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   mentorpickUsername?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
-  phoneNumber?: Prisma.StringNullableWithAggregatesFilter<"Profile"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Profile"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Profile"> | Date | string
   userId?: Prisma.BigIntWithAggregatesFilter<"Profile"> | bigint | number
@@ -330,12 +414,19 @@ export type ProfileScalarWhereWithAggregatesInput = {
 
 export type ProfileCreateInput = {
   id?: bigint | number
+  firstName?: string | null
+  lastName?: string | null
+  countryCode?: string | null
+  college?: string | null
+  rollNumber?: string | null
+  isStudent?: boolean | null
+  phone?: string | null
   githubUsername?: string | null
+  linkedinUsername?: string | null
   leetcodeUsername?: string | null
   codeforcesUsername?: string | null
   codechefUsername?: string | null
   mentorpickUsername?: string | null
-  phoneNumber?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutProfileInput
@@ -343,12 +434,19 @@ export type ProfileCreateInput = {
 
 export type ProfileUncheckedCreateInput = {
   id?: bigint | number
+  firstName?: string | null
+  lastName?: string | null
+  countryCode?: string | null
+  college?: string | null
+  rollNumber?: string | null
+  isStudent?: boolean | null
+  phone?: string | null
   githubUsername?: string | null
+  linkedinUsername?: string | null
   leetcodeUsername?: string | null
   codeforcesUsername?: string | null
   codechefUsername?: string | null
   mentorpickUsername?: string | null
-  phoneNumber?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: bigint | number
@@ -356,12 +454,19 @@ export type ProfileUncheckedCreateInput = {
 
 export type ProfileUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  college?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isStudent?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   githubUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedinUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leetcodeUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codeforcesUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codechefUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mentorpickUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutProfileNestedInput
@@ -369,12 +474,19 @@ export type ProfileUpdateInput = {
 
 export type ProfileUncheckedUpdateInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  college?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isStudent?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   githubUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedinUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leetcodeUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codeforcesUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codechefUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mentorpickUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
@@ -382,12 +494,19 @@ export type ProfileUncheckedUpdateInput = {
 
 export type ProfileCreateManyInput = {
   id?: bigint | number
+  firstName?: string | null
+  lastName?: string | null
+  countryCode?: string | null
+  college?: string | null
+  rollNumber?: string | null
+  isStudent?: boolean | null
+  phone?: string | null
   githubUsername?: string | null
+  linkedinUsername?: string | null
   leetcodeUsername?: string | null
   codeforcesUsername?: string | null
   codechefUsername?: string | null
   mentorpickUsername?: string | null
-  phoneNumber?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
   userId: bigint | number
@@ -395,24 +514,38 @@ export type ProfileCreateManyInput = {
 
 export type ProfileUpdateManyMutationInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  college?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isStudent?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   githubUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedinUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leetcodeUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codeforcesUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codechefUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mentorpickUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ProfileUncheckedUpdateManyInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  college?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isStudent?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   githubUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedinUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leetcodeUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codeforcesUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codechefUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mentorpickUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   userId?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
@@ -425,12 +558,19 @@ export type ProfileNullableScalarRelationFilter = {
 
 export type ProfileCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  countryCode?: Prisma.SortOrder
+  college?: Prisma.SortOrder
+  rollNumber?: Prisma.SortOrder
+  isStudent?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   githubUsername?: Prisma.SortOrder
+  linkedinUsername?: Prisma.SortOrder
   leetcodeUsername?: Prisma.SortOrder
   codeforcesUsername?: Prisma.SortOrder
   codechefUsername?: Prisma.SortOrder
   mentorpickUsername?: Prisma.SortOrder
-  phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -443,12 +583,19 @@ export type ProfileAvgOrderByAggregateInput = {
 
 export type ProfileMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  countryCode?: Prisma.SortOrder
+  college?: Prisma.SortOrder
+  rollNumber?: Prisma.SortOrder
+  isStudent?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   githubUsername?: Prisma.SortOrder
+  linkedinUsername?: Prisma.SortOrder
   leetcodeUsername?: Prisma.SortOrder
   codeforcesUsername?: Prisma.SortOrder
   codechefUsername?: Prisma.SortOrder
   mentorpickUsername?: Prisma.SortOrder
-  phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -456,12 +603,19 @@ export type ProfileMaxOrderByAggregateInput = {
 
 export type ProfileMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
+  firstName?: Prisma.SortOrder
+  lastName?: Prisma.SortOrder
+  countryCode?: Prisma.SortOrder
+  college?: Prisma.SortOrder
+  rollNumber?: Prisma.SortOrder
+  isStudent?: Prisma.SortOrder
+  phone?: Prisma.SortOrder
   githubUsername?: Prisma.SortOrder
+  linkedinUsername?: Prisma.SortOrder
   leetcodeUsername?: Prisma.SortOrder
   codeforcesUsername?: Prisma.SortOrder
   codechefUsername?: Prisma.SortOrder
   mentorpickUsername?: Prisma.SortOrder
-  phoneNumber?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   userId?: Prisma.SortOrder
@@ -504,26 +658,44 @@ export type ProfileUncheckedUpdateOneWithoutUserNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProfileUpdateToOneWithWhereWithoutUserInput, Prisma.ProfileUpdateWithoutUserInput>, Prisma.ProfileUncheckedUpdateWithoutUserInput>
 }
 
+export type NullableBoolFieldUpdateOperationsInput = {
+  set?: boolean | null
+}
+
 export type ProfileCreateWithoutUserInput = {
   id?: bigint | number
+  firstName?: string | null
+  lastName?: string | null
+  countryCode?: string | null
+  college?: string | null
+  rollNumber?: string | null
+  isStudent?: boolean | null
+  phone?: string | null
   githubUsername?: string | null
+  linkedinUsername?: string | null
   leetcodeUsername?: string | null
   codeforcesUsername?: string | null
   codechefUsername?: string | null
   mentorpickUsername?: string | null
-  phoneNumber?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
 
 export type ProfileUncheckedCreateWithoutUserInput = {
   id?: bigint | number
+  firstName?: string | null
+  lastName?: string | null
+  countryCode?: string | null
+  college?: string | null
+  rollNumber?: string | null
+  isStudent?: boolean | null
+  phone?: string | null
   githubUsername?: string | null
+  linkedinUsername?: string | null
   leetcodeUsername?: string | null
   codeforcesUsername?: string | null
   codechefUsername?: string | null
   mentorpickUsername?: string | null
-  phoneNumber?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -546,24 +718,38 @@ export type ProfileUpdateToOneWithWhereWithoutUserInput = {
 
 export type ProfileUpdateWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  college?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isStudent?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   githubUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedinUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leetcodeUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codeforcesUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codechefUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mentorpickUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ProfileUncheckedUpdateWithoutUserInput = {
   id?: Prisma.BigIntFieldUpdateOperationsInput | bigint | number
+  firstName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  lastName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  countryCode?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  college?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  rollNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  isStudent?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  phone?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   githubUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  linkedinUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   leetcodeUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codeforcesUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   codechefUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   mentorpickUsername?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  phoneNumber?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -572,12 +758,19 @@ export type ProfileUncheckedUpdateWithoutUserInput = {
 
 export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  firstName?: boolean
+  lastName?: boolean
+  countryCode?: boolean
+  college?: boolean
+  rollNumber?: boolean
+  isStudent?: boolean
+  phone?: boolean
   githubUsername?: boolean
+  linkedinUsername?: boolean
   leetcodeUsername?: boolean
   codeforcesUsername?: boolean
   codechefUsername?: boolean
   mentorpickUsername?: boolean
-  phoneNumber?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -586,12 +779,19 @@ export type ProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
 
 export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  firstName?: boolean
+  lastName?: boolean
+  countryCode?: boolean
+  college?: boolean
+  rollNumber?: boolean
+  isStudent?: boolean
+  phone?: boolean
   githubUsername?: boolean
+  linkedinUsername?: boolean
   leetcodeUsername?: boolean
   codeforcesUsername?: boolean
   codechefUsername?: boolean
   mentorpickUsername?: boolean
-  phoneNumber?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -600,12 +800,19 @@ export type ProfileSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
+  firstName?: boolean
+  lastName?: boolean
+  countryCode?: boolean
+  college?: boolean
+  rollNumber?: boolean
+  isStudent?: boolean
+  phone?: boolean
   githubUsername?: boolean
+  linkedinUsername?: boolean
   leetcodeUsername?: boolean
   codeforcesUsername?: boolean
   codechefUsername?: boolean
   mentorpickUsername?: boolean
-  phoneNumber?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
@@ -614,18 +821,25 @@ export type ProfileSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exten
 
 export type ProfileSelectScalar = {
   id?: boolean
+  firstName?: boolean
+  lastName?: boolean
+  countryCode?: boolean
+  college?: boolean
+  rollNumber?: boolean
+  isStudent?: boolean
+  phone?: boolean
   githubUsername?: boolean
+  linkedinUsername?: boolean
   leetcodeUsername?: boolean
   codeforcesUsername?: boolean
   codechefUsername?: boolean
   mentorpickUsername?: boolean
-  phoneNumber?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   userId?: boolean
 }
 
-export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "githubUsername" | "leetcodeUsername" | "codeforcesUsername" | "codechefUsername" | "mentorpickUsername" | "phoneNumber" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["profile"]>
+export type ProfileOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "firstName" | "lastName" | "countryCode" | "college" | "rollNumber" | "isStudent" | "phone" | "githubUsername" | "linkedinUsername" | "leetcodeUsername" | "codeforcesUsername" | "codechefUsername" | "mentorpickUsername" | "createdAt" | "updatedAt" | "userId", ExtArgs["result"]["profile"]>
 export type ProfileInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -643,12 +857,19 @@ export type $ProfilePayload<ExtArgs extends runtime.Types.Extensions.InternalArg
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: bigint
+    firstName: string | null
+    lastName: string | null
+    countryCode: string | null
+    college: string | null
+    rollNumber: string | null
+    isStudent: boolean | null
+    phone: string | null
     githubUsername: string | null
+    linkedinUsername: string | null
     leetcodeUsername: string | null
     codeforcesUsername: string | null
     codechefUsername: string | null
     mentorpickUsername: string | null
-    phoneNumber: string | null
     createdAt: Date
     updatedAt: Date
     userId: bigint
@@ -1077,12 +1298,19 @@ export interface Prisma__ProfileClient<T, Null = never, ExtArgs extends runtime.
  */
 export interface ProfileFieldRefs {
   readonly id: Prisma.FieldRef<"Profile", 'BigInt'>
+  readonly firstName: Prisma.FieldRef<"Profile", 'String'>
+  readonly lastName: Prisma.FieldRef<"Profile", 'String'>
+  readonly countryCode: Prisma.FieldRef<"Profile", 'String'>
+  readonly college: Prisma.FieldRef<"Profile", 'String'>
+  readonly rollNumber: Prisma.FieldRef<"Profile", 'String'>
+  readonly isStudent: Prisma.FieldRef<"Profile", 'Boolean'>
+  readonly phone: Prisma.FieldRef<"Profile", 'String'>
   readonly githubUsername: Prisma.FieldRef<"Profile", 'String'>
+  readonly linkedinUsername: Prisma.FieldRef<"Profile", 'String'>
   readonly leetcodeUsername: Prisma.FieldRef<"Profile", 'String'>
   readonly codeforcesUsername: Prisma.FieldRef<"Profile", 'String'>
   readonly codechefUsername: Prisma.FieldRef<"Profile", 'String'>
   readonly mentorpickUsername: Prisma.FieldRef<"Profile", 'String'>
-  readonly phoneNumber: Prisma.FieldRef<"Profile", 'String'>
   readonly createdAt: Prisma.FieldRef<"Profile", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Profile", 'DateTime'>
   readonly userId: Prisma.FieldRef<"Profile", 'BigInt'>

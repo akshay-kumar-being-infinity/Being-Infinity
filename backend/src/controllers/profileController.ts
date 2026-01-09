@@ -17,7 +17,10 @@ interface CreateProfileBody {
   codeforcesUsername?: string;
   codechefUsername?: string;
   mentorpickUsername?: string;
-  phoneNumber?: string;
+  linkedinUsername?: string;
+  phone?: string;
+  isStudent?: boolean
+  countryCode?: string;
 }
 
 // Create User Profile
@@ -25,10 +28,11 @@ export async function createProfile(req: AuthRequest, res: Response): Promise<vo
   try {
     console.log('🆕 Creating profile for user:', req.user?.userId);
 
-    const { 
+    const {
       firstName, lastName, rollNumber, college,
       githubUsername, leetcodeUsername, codeforcesUsername, 
-      codechefUsername, mentorpickUsername, phoneNumber 
+      codechefUsername, mentorpickUsername, linkedinUsername, phone,
+      isStudent, countryCode
     } = req.body as CreateProfileBody;
 
     const userId = BigInt(req.user!.userId);
@@ -54,7 +58,10 @@ export async function createProfile(req: AuthRequest, res: Response): Promise<vo
         codeforcesUsername: codeforcesUsername || null,
         codechefUsername: codechefUsername || null,
         mentorpickUsername: mentorpickUsername || null,
-        phoneNumber: phoneNumber || null,
+        linkedinUsername: linkedinUsername || null,
+        phone: phone || null,
+        isStudent: isStudent ?? false,
+        countryCode: countryCode || '+91',
       },
       select: {
         id: true,
@@ -67,7 +74,10 @@ export async function createProfile(req: AuthRequest, res: Response): Promise<vo
         codeforcesUsername: true,
         codechefUsername: true,
         mentorpickUsername: true,
-        phoneNumber: true,
+        linkedinUsername: true,
+        phone: true,
+        isStudent: true,
+        countryCode: true,
         createdAt: true,
         updatedAt: true,
       },
@@ -78,7 +88,10 @@ export async function createProfile(req: AuthRequest, res: Response): Promise<vo
     res.status(201).json({
       success: true,
       message: 'Profile created successfully',
-      profile,
+      profile: {
+        ...profile,
+        id: profile.id.toString(),
+      },
     });
 
   } catch (error) {
@@ -101,7 +114,8 @@ export async function getOwnProfile(req: AuthRequest, res: Response): Promise<vo
       select: {
         id: true, firstName: true, lastName: true, rollNumber: true, college: true,
         githubUsername: true, leetcodeUsername: true, codeforcesUsername: true,
-        codechefUsername: true, mentorpickUsername: true, phoneNumber: true,
+        codechefUsername: true, mentorpickUsername: true, linkedinUsername: true, phone: true,
+        isStudent: true, countryCode: true,
         createdAt: true, updatedAt: true,
       },
     });
@@ -137,7 +151,8 @@ export async function updateProfile(req: AuthRequest, res: Response): Promise<vo
     const { 
       firstName, lastName, rollNumber, college,
       githubUsername, leetcodeUsername, codeforcesUsername, 
-      codechefUsername, mentorpickUsername, phoneNumber 
+      codechefUsername, mentorpickUsername, linkedinUsername, phone,
+      isStudent, countryCode
     } = req.body as CreateProfileBody;
 
     console.log(`📝 [UPDATE/${userId}] Data:`, { firstName, githubUsername, college });
@@ -155,7 +170,10 @@ export async function updateProfile(req: AuthRequest, res: Response): Promise<vo
         codeforcesUsername: codeforcesUsername || null,
         codechefUsername: codechefUsername || null,
         mentorpickUsername: mentorpickUsername || null,
-        phoneNumber: phoneNumber || null,
+        linkedinUsername: linkedinUsername || null,
+        phone: phone || null,
+        isStudent: isStudent ?? false,
+        countryCode: countryCode || '+91',
       },
       update: {
         firstName: firstName || null,
@@ -167,12 +185,16 @@ export async function updateProfile(req: AuthRequest, res: Response): Promise<vo
         codeforcesUsername: codeforcesUsername || null,
         codechefUsername: codechefUsername || null,
         mentorpickUsername: mentorpickUsername || null,
-        phoneNumber: phoneNumber || null,
+        linkedinUsername: linkedinUsername || null,
+        phone: phone || null,
+        isStudent: isStudent ?? false,
+        countryCode: countryCode || '+91',
       },
       select: {
         id: true, firstName: true, lastName: true, rollNumber: true, college: true,
         githubUsername: true, leetcodeUsername: true, codeforcesUsername: true,
-        codechefUsername: true, mentorpickUsername: true, phoneNumber: true,
+        codechefUsername: true, mentorpickUsername: true, linkedinUsername: true, phone: true,
+        isStudent: true, countryCode: true,
         updatedAt: true,
       },
     });

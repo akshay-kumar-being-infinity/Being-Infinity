@@ -5,8 +5,10 @@ import { requireAuth } from '../middlewares/authMiddleware.js'
 
 const profileRouter = Router();
 
+/**
+ * POST /api/profiles/create
+ */
 profileRouter.post('/create',
-  requireAuth,  // ✅ Your auth middleware
   /**
    * @swagger
    * /api/profiles/create:
@@ -22,19 +24,22 @@ profileRouter.post('/create',
    *           schema:
    *             type: object
    *             properties:
-   *               firstName: { type: string, example: "John", nullable: true }
-   *               lastName: { type: string, example: "Doe", nullable: true }
-   *               rollNumber: { type: string, example: "CS2023001", nullable: true }
+   *               firstName: { type: string, example: "John" }
+   *               lastName: { type: string, example: "Doe" }
+   *               countryCode: { type: string, example: "+91" }
+   *               phone: { type: string, example: "9876543210" }
+   *               isStudent: { type: boolean, example: true }
    *               college: { type: string, example: "IIT Bombay", nullable: true }
-   *               githubUsername: { type: string, example: "johndoe", nullable: true }
-   *               leetcodeUsername: { type: string, example: "john_lc", nullable: true }
-   *               codeforcesUsername: { type: string, example: "john_cf", nullable: true }
-   *               codechefUsername: { type: string, example: "john_cc", nullable: true }
+   *               rollNumber: { type: string, example: "CS2023001", nullable: true }
    *               mentorpickUsername: { type: string, example: "john_mp", nullable: true }
-   *               phoneNumber: { type: string, example: "+919876543210", nullable: true }
+   *               leetcodeUsername: { type: string, example: "john_lc", nullable: true }
+   *               codechefUsername: { type: string, example: "john_cc", nullable: true }
+   *               codeforcesUsername: { type: string, example: "john_cf", nullable: true }
+   *               githubUsername: { type: string, example: "johndoe", nullable: true }
+   *               linkedinUsername: { type: string, example: "john_linkedin", nullable: true }
    *     responses:
    *       201:
-   *         description: Profile created
+   *         description: Profile created successfully
    *         content:
    *           application/json:
    *             schema:
@@ -47,6 +52,8 @@ profileRouter.post('/create',
    *                   properties:
    *                     id: { type: string }
    *                     firstName: { type: string, nullable: true }
+   *                     lastName: { type: string, nullable: true }
+   *                     phone: { type: string, nullable: true }
    *                     githubUsername: { type: string, nullable: true }
    *                     createdAt: { type: string, format: date-time }
    *       409:
@@ -55,8 +62,9 @@ profileRouter.post('/create',
   createProfile
 );
 
-
-// GET /api/profiles/me - Get own profile  
+/**
+ * GET /api/profiles/me
+ */
 profileRouter.get('/me',
   requireAuth,
   /**
@@ -69,24 +77,30 @@ profileRouter.get('/me',
    *       - bearerAuth: []
    *     responses:
    *       200:
-   *         description: Profile data
+   *         description: Profile data retrieved successfully
    *         content:
    *           application/json:
    *             schema:
    *               type: object
    *               properties:
-   *                 success:
-   *                   type: boolean
-   *                   example: true
+   *                 success: { type: boolean, example: true }
    *                 profile:
    *                   type: object
    *                   properties:
    *                     id: { type: string }
    *                     firstName: { type: string, nullable: true }
    *                     lastName: { type: string, nullable: true }
-   *                     rollNumber: { type: string, nullable: true }
+   *                     countryCode: { type: string, nullable: true }
+   *                     phone: { type: string, nullable: true }
+   *                     isStudent: { type: boolean, nullable: true }
    *                     college: { type: string, nullable: true }
+   *                     rollNumber: { type: string, nullable: true }
+   *                     mentorpickUsername: { type: string, nullable: true }
+   *                     leetcodeUsername: { type: string, nullable: true }
+   *                     codechefUsername: { type: string, nullable: true }
+   *                     codeforcesUsername: { type: string, nullable: true }
    *                     githubUsername: { type: string, nullable: true }
+   *                     linkedinUsername: { type: string, nullable: true }
    *                     createdAt: { type: string, format: date-time }
    *       404:
    *         description: Profile not found
@@ -96,7 +110,9 @@ profileRouter.get('/me',
   getOwnProfile
 );
 
-// routes/profile.ts (Add PUT /profiles/update)
+/**
+ * PUT /api/profiles/update
+ */
 profileRouter.put('/update',
   requireAuth,
   /**
@@ -105,7 +121,8 @@ profileRouter.put('/update',
    *   put:
    *     summary: Update Own Profile
    *     tags: [Profiles]
-   *     security: [bearerAuth: []]
+   *     security:
+   *       - bearerAuth: []
    *     requestBody:
    *       content:
    *         application/json:
@@ -113,11 +130,36 @@ profileRouter.put('/update',
    *             type: object
    *             properties:
    *               firstName: { type: string, example: "John", nullable: true }
+   *               lastName: { type: string, example: "Doe", nullable: true }
+   *               countryCode: { type: string, example: "+91", nullable: true }
+   *               phone: { type: string, example: "9876543210", nullable: true }
+   *               isStudent: { type: boolean, example: true }
+   *               college: { type: string, example: "IIT Bombay", nullable: true }
+   *               rollNumber: { type: string, example: "CS2023001", nullable: true }
+   *               mentorpickUsername: { type: string, example: "john_mp", nullable: true }
+   *               leetcodeUsername: { type: string, example: "john_lc", nullable: true }
+   *               codechefUsername: { type: string, example: "john_cc", nullable: true }
+   *               codeforcesUsername: { type: string, example: "john_cf", nullable: true }
    *               githubUsername: { type: string, example: "johndoe", nullable: true }
-   *               # ... all fields same as POST
+   *               linkedinUsername: { type: string, example: "john_linkedin", nullable: true }
    *     responses:
    *       200:
-   *         description: Profile updated
+   *         description: Profile updated successfully
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 success: { type: boolean, example: true }
+   *                 message: { type: string, example: "Profile updated successfully" }
+   *                 profile:
+   *                   type: object
+   *                   properties:
+   *                     id: { type: string }
+   *                     firstName: { type: string, nullable: true }
+   *                     lastName: { type: string, nullable: true }
+   *                     githubUsername: { type: string, nullable: true }
+   *                     updatedAt: { type: string, format: date-time }
    *       500:
    *         description: Server error
    */
