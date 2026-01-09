@@ -27,7 +27,13 @@ model User {
 
 model Profile {
   id                    BigInt      @id @default(autoincrement())
+  firstName             String?
+  lastName              String?
+  countryCode           String?
+  phone                 String?
   githubUsername        String?
+  linkedinUsername      String?
+  isStudent             Boolean?
   leetcodeUsername      String?
   codeforcesUsername    String?
   codechefUsername      String?
