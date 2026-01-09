@@ -27,6 +27,8 @@ model User {
 
 model Profile {
   id                    BigInt      @id @default(autoincrement())
+  firstName           
+
   githubUsername        String?
   leetcodeUsername      String?
   codeforcesUsername    String?
