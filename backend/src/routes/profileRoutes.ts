@@ -9,6 +9,7 @@ const profileRouter = Router();
  * POST /api/profiles/create
  */
 profileRouter.post('/create',
+  requireAuth,
   /**
    * @swagger
    * /api/profiles/create:
