@@ -1,6 +1,7 @@
 import logo from "../assets/logo.png";
 import { useEffect, useCallback, useRef } from 'react';
 import { config } from '../config';
+import { logger } from "../lib/Logger";
 
 declare global {
   interface Window {
@@ -13,7 +14,7 @@ export default function Login() {
   const googleButtonRef = useRef<HTMLDivElement>(null);
   const handleGoogleSuccess = useCallback(async (response: any) => {
     const idToken = response.credential;
-    console.log('idToken sent to backend:', idToken?.slice(0, 20) + '...');
+    logger.info('idToken sent to backend:', idToken?.slice(0, 20) + '...');
 
     try {
       const res = await fetch(`${config.baseUrl}/api/auth/google`, {
@@ -23,7 +24,7 @@ export default function Login() {
       });
 
       const data = await res.json();
-      console.log('Backend response:', data);
+      logger.info('Backend response:', data);
 
       if (data.success) {
         localStorage.setItem('token', data.token);
@@ -33,8 +34,8 @@ export default function Login() {
         alert(data.message || 'Login failed');
       }
     } catch (error) {
-      console.error('Backend call failed:', error);
-      alert('Check backend at localhost:3000');
+        logger.error('Backend call failed:', error);
+        alert('Check backend at localhost:3000');
     }
   }, []);
 

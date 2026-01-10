@@ -2,6 +2,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../lib/prisma.js';
 import { Role } from '../generated/prisma/client.js';
+import { logger } from '../lib/logger.js';
 
 interface AuthRequest extends Request {
   user?: { userId: string; role: Role };
@@ -26,7 +27,7 @@ interface CreateProfileBody {
 // Create User Profile
 export async function createProfile(req: AuthRequest, res: Response): Promise<void> {
   try {
-    console.log('🆕 Creating profile for user:', req.user?.userId);
+    logger.info('🆕 Creating profile for user:', req.user?.userId);
 
     const {
       firstName, lastName, rollNumber, college,
@@ -37,11 +38,11 @@ export async function createProfile(req: AuthRequest, res: Response): Promise<vo
 
     const userId = BigInt(req.user!.userId);
 
-    console.log('📝 Profile data:', { firstName, lastName, rollNumber, college, githubUsername });
+    logger.info('📝 Profile data:', { firstName, lastName, rollNumber, college, githubUsername });
 
     const existingProfile = await prisma.profile.findUnique({ where: { userId } });
     if (existingProfile) {
-      console.log('⚠️ Profile already exists:', existingProfile.id);
+      logger.warn('⚠️ Profile already exists:', existingProfile.id);
       res.status(409).json({ success: false, message: 'Profile exists. Use PUT /api/profiles/me to update.' });
       return;
     }
@@ -83,7 +84,7 @@ export async function createProfile(req: AuthRequest, res: Response): Promise<vo
       },
     });
 
-    console.log(`✅ Profile created ID: ${profile.id} for user ${userId}`);
+    logger.info(`✅ Profile created ID: ${profile.id} for user ${userId}`);
 
     res.status(201).json({
       success: true,
@@ -95,7 +96,7 @@ export async function createProfile(req: AuthRequest, res: Response): Promise<vo
     });
 
   } catch (error) {
-    console.error('❌ Profile creation error:', error);
+    logger.error('❌ Profile creation error:', error);
     res.status(500).json({ success: false, message: 'Failed to create profile' });
   }
 }
@@ -103,11 +104,11 @@ export async function createProfile(req: AuthRequest, res: Response): Promise<vo
 // Get User Profile
 export async function getOwnProfile(req: AuthRequest, res: Response): Promise<void> {
   try {
-    console.log(`👤 [GET /profiles/me] userId=${req.user!.userId}`);
+    logger.info(`👤 [GET /profiles/me] userId=${req.user!.userId}`);
 
     const userId = BigInt(req.user!.userId);
 
-    console.log(`🔍 [PROFILE] Looking up profile for userId=${userId}`);
+    logger.info(`🔍 [PROFILE] Looking up profile for userId=${userId}`);
 
     const profileData = await prisma.profile.findUnique({
       where: { userId },
@@ -121,13 +122,13 @@ export async function getOwnProfile(req: AuthRequest, res: Response): Promise<vo
     });
 
     if (!profileData) {
-      console.log(`❌ [PROFILE/${userId}] No profile found`);
+      logger.error(`❌ [PROFILE/${userId}] No profile found`);
       res.status(404).json({ success: false, message: 'Profile not found. Create one first.' });
       return;
     }
 
-    console.log(`✅ [PROFILE/${profileData.id}] Found for userId=${userId}`);
-    console.log(`📤 [GET /profiles/me] Responding with profileId=${profileData.id}`);
+    logger.info(`✅ [PROFILE/${profileData.id}] Found for userId=${userId}`);
+    logger.info(`📤 [GET /profiles/me] Responding with profileId=${profileData.id}`);
 
     res.status(200).json({
       success: true,
@@ -138,7 +139,7 @@ export async function getOwnProfile(req: AuthRequest, res: Response): Promise<vo
     });
 
   } catch (error) {
-    console.error(`💥 [GET /profiles/me] userId=${req.user?.userId} error=`, error);
+    logger.error(`💥 [GET /profiles/me] userId=${req.user?.userId} error=`, error);
     res.status(500).json({ success: false, message: 'Failed to fetch profile' });
   }
 }
@@ -147,7 +148,7 @@ export async function getOwnProfile(req: AuthRequest, res: Response): Promise<vo
 // Update User Profile
 export async function updateProfile(req: AuthRequest, res: Response): Promise<void> {
   try {
-    console.log(`🔄 [PUT /profiles/update] userId=${req.user!.userId}`);
+    logger.info(`🔄 [PUT /profiles/update] userId=${req.user!.userId}`);
 
     const userId = BigInt(req.user!.userId);
 
@@ -158,7 +159,7 @@ export async function updateProfile(req: AuthRequest, res: Response): Promise<vo
       isStudent, countryCode
     } = req.body as CreateProfileBody;
 
-    console.log(`📝 [UPDATE/${userId}] Data:`, { firstName, githubUsername, college });
+     logger.info(`📝 [UPDATE/${userId}] Data:`, { firstName, githubUsername, college });
 
     const profile = await prisma.profile.upsert({
       where: { userId },
@@ -202,7 +203,7 @@ export async function updateProfile(req: AuthRequest, res: Response): Promise<vo
       },
     });
 
-    console.log(`✅ [UPDATE/${profile.id}] Profile updated for userId=${userId}`);
+    logger.info(`✅ [UPDATE/${profile.id}] Profile updated for userId=${userId}`);
 
     res.status(200).json({
       success: true,
@@ -214,7 +215,7 @@ export async function updateProfile(req: AuthRequest, res: Response): Promise<vo
     });
 
   } catch (error) {
-    console.error(`💥 [PUT /profiles/update] userId=${req.user?.userId} error=`, error);
+    logger.error(`💥 [PUT /profiles/update] userId=${req.user?.userId} error=`, error);
     res.status(500).json({ success: false, message: 'Failed to update profile' });
   }
 }

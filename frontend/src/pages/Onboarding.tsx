@@ -13,6 +13,7 @@ import { LinkedInVerifier } from "../components/onboarding/verifiers/LinkedInVer
 import { GitHubVerifier } from "../components/onboarding/verifiers/GitHubVerifier";
 
 import COLLEGES from "../data/colleges.json";
+import { logger } from "../lib/Logger";
 
 export const Onboarding: React.FC = () => {
   // 1. Initialize State with DB Schema Names
@@ -51,7 +52,7 @@ export const Onboarding: React.FC = () => {
     if (savedData) {
       try {
         setFormData(JSON.parse(savedData));
-      } catch (e) { console.error(e); }
+      } catch (e) { logger.error("error", e); }
     } else if (userInfo.given_name) {
        setFormData(prev => ({...prev, firstName: userInfo.given_name, lastName: userInfo.family_name || "" }));
     }
@@ -121,7 +122,7 @@ export const Onboarding: React.FC = () => {
     try {
       const token = localStorage.getItem("token");
       //replace with written api.
-      const response = await fetch("http://localhost:3000/api/user/onboarding", {
+      const response = await fetch("http://localhost:3000/api/profiles/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -146,7 +147,7 @@ export const Onboarding: React.FC = () => {
         alert("Failed to save: " + data.message);
       }
     } catch (error) {
-      console.error("API Error:", error);
+      logger.error("API Error:", error);
       alert("Something went wrong. Is the backend running?");
     } finally {
       setIsSaving(false);
