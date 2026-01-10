@@ -10,7 +10,7 @@ export const config = {
   auth: {
     googleClientId: getEnv('VITE_GOOGLE_CLIENT_ID'),
   },
-  
+
   platforms: {
     mentorpickUrl: getEnv('VITE_LINK_MENTORPICK', 'https://mentorpick.com'),
     leetcodeUrl: getEnv('VITE_LINK_LEETCODE', 'https://leetcode.com/accounts'),
