@@ -131,7 +131,10 @@ export async function getOwnProfile(req: AuthRequest, res: Response): Promise<vo
 
     res.status(200).json({
       success: true,
-      profile: profileData,
+        profile: {
+        ...profileData,
+        id: profileData.id.toString(),
+      },
     });
 
   } catch (error) {
@@ -204,7 +207,10 @@ export async function updateProfile(req: AuthRequest, res: Response): Promise<vo
     res.status(200).json({
       success: true,
       message: 'Profile updated successfully',
-      profile,
+        profile: {
+        ...profile,
+        id: profile.id.toString(),
+      },
     });
 
   } catch (error) {
