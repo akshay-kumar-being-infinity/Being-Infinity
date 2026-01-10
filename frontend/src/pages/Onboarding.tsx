@@ -122,7 +122,7 @@ export const Onboarding: React.FC = () => {
     try {
       const token = localStorage.getItem("token");
       //replace with written api.
-      const response = await fetch("http://localhost:3000/api/profiles/create", {
+        const response = await fetch("http://localhost:3000/api/user/onboarding", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
