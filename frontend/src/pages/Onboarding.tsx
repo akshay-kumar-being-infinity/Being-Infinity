@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Input } from "../components/ui/Input";
 import { Button } from "../components/ui/Button";
 import { SearchableSelect } from "../components/ui/SearchableSelect";
@@ -12,10 +13,13 @@ import { CodeForcesVerifier } from "../components/onboarding/verifiers/CodeForce
 import { LinkedInVerifier } from "../components/onboarding/verifiers/LinkedInVerifier";
 import { GitHubVerifier } from "../components/onboarding/verifiers/GitHubVerifier";
 
+import { config } from "../config"; 
 import COLLEGES from "../data/colleges.json";
 
 export const Onboarding: React.FC = () => {
-  // 1. Initialize State with DB Schema Names
+  const navigate = useNavigate();
+
+  // State
   const [formData, setFormData] = useState({
     firstName: "", 
     lastName: "", 
@@ -33,8 +37,9 @@ export const Onboarding: React.FC = () => {
   });
 
   const [isSaving, setIsSaving] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
-  const [isLoaded, setIsLoaded] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Refs
   const firstNameRef = useRef<HTMLInputElement>(null);
@@ -43,27 +48,61 @@ export const Onboarding: React.FC = () => {
   const collegeRef = useRef<HTMLDivElement>(null);
   const rollNumberRef = useRef<HTMLInputElement>(null);
 
-  // Load Draft
+  // Load logic: Fetch from DB first, fall back to Local Storage
   useEffect(() => {
-    const savedData = localStorage.getItem("onboarding_draft");
-    const userInfo = JSON.parse(localStorage.getItem("user_info") || "{}");
-    
-    if (savedData) {
+    const fetchProfile = async () => {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
       try {
-        setFormData(JSON.parse(savedData));
-      } catch (e) { console.error(e); }
-    } else if (userInfo.given_name) {
-       setFormData(prev => ({...prev, firstName: userInfo.given_name, lastName: userInfo.family_name || "" }));
-    }
-    setIsLoaded(true);
+        const response = await fetch(`${config.baseUrl}/api/profiles/me`, {
+          headers: { "Authorization": `Bearer ${token}` }
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (data.success && data.profile) {
+            setIsEditMode(true);
+            
+            setFormData(prev => ({
+              ...prev,
+              ...data.profile,
+              isStudent: data.profile.isStudent || false,
+              countryCode: data.profile.countryCode || "+91"
+            }));
+            setIsLoading(false);
+            return;
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching profile:", error);
+      }
+
+      // If no DB profile, check Local Storage Draft
+      const savedData = localStorage.getItem("onboarding_draft");
+      const userInfo = JSON.parse(localStorage.getItem("user_info") || "{}");
+
+      if (savedData) {
+        try {
+          setFormData(prev => ({ ...prev, ...JSON.parse(savedData) }));
+        } catch (e) { 
+          console.error("Error parsing saved draft:", e); 
+        }
+      } else if (userInfo.given_name) {
+         setFormData(prev => ({...prev, firstName: userInfo.given_name, lastName: userInfo.family_name || "" }));
+      }
+      setIsLoading(false);
+    };
+
+    fetchProfile();
   }, []);
 
-  // Save Draft
+  // Save Draft (Only if NOT in edit mode)
   useEffect(() => {
-    if (isLoaded) {
+    if (!isLoading && !isEditMode) {
       localStorage.setItem("onboarding_draft", JSON.stringify(formData));
     }
-  }, [formData, isLoaded]);
+  }, [formData, isLoading, isEditMode]);
 
   const handleChange = (field: string, value: any) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -83,15 +122,15 @@ export const Onboarding: React.FC = () => {
     const newErrors: { [key: string]: string } = {};
     let firstErrorRef: any = null;
 
-    if (!formData.firstName.trim()) {
+    if (!formData.firstName?.trim()) {
       newErrors.firstName = "First name is required";
       if (!firstErrorRef) firstErrorRef = firstNameRef;
     }
-    if (!formData.lastName.trim()) {
+    if (!formData.lastName?.trim()) {
       newErrors.lastName = "Last name is required";
       if (!firstErrorRef) firstErrorRef = lastNameRef;
     }
-    if (!formData.phone.trim() || formData.phone.length < 5) {
+    if (!formData.phone?.trim() || formData.phone.length < 5) {
       newErrors.phone = "Valid phone number is required";
       if (!firstErrorRef) firstErrorRef = phoneRef;
     }
@@ -100,7 +139,7 @@ export const Onboarding: React.FC = () => {
         newErrors.college = "Please select your college";
         if (!firstErrorRef) firstErrorRef = collegeRef;
       }
-      if (!formData.rollNumber.trim()) {
+      if (!formData.rollNumber?.trim()) {
         newErrors.rollNumber = "Roll/Registration number is required";
         if (!firstErrorRef) firstErrorRef = rollNumberRef;
       }
@@ -120,9 +159,13 @@ export const Onboarding: React.FC = () => {
     
     try {
       const token = localStorage.getItem("token");
-      //replace with written api.
-      const response = await fetch("http://localhost:3000/api/user/onboarding", {
-        method: "POST",
+      
+      const endpoint = isEditMode ? "/api/profiles/update" : "/api/profiles/create";
+      const method = isEditMode ? "PUT" : "POST";
+      const apiUrl = `${config.baseUrl}${endpoint}`; 
+
+      const response = await fetch(apiUrl, {
+        method: method,
         headers: {
           "Content-Type": "application/json",
           "Authorization": `Bearer ${token}`
@@ -132,22 +175,27 @@ export const Onboarding: React.FC = () => {
 
       const data = await response.json();
 
-      if (data.success) {
+      if (response.ok && data.success) {
         localStorage.removeItem("onboarding_draft");
         
         const userInfo = JSON.parse(localStorage.getItem("user_info") || "{}");
         userInfo.isProfileComplete = true;
         userInfo.given_name = formData.firstName;
+        userInfo.family_name = formData.lastName;
         localStorage.setItem("user_info", JSON.stringify(userInfo));
         
         window.dispatchEvent(new Event("user_updated"));
-        alert("Profile Saved Successfully!");
+        
+        alert(isEditMode ? "Profile updated successfully." : "Profile created successfully.");
+        navigate("/"); 
+        
       } else {
-        alert("Failed to save: " + data.message);
+        console.error("Submission failed:", data.message);
+        alert("Failed to save: " + (data.message || "Unknown error"));
       }
     } catch (error) {
-      console.error("API Error:", error);
-      alert("Something went wrong. Is the backend running?");
+      console.error("Network or server error:", error);
+      alert("An unexpected error occurred. Please try again later.");
     } finally {
       setIsSaving(false);
     }
@@ -159,9 +207,11 @@ export const Onboarding: React.FC = () => {
         
         <div className="text-center space-y-2">
           <h1 className="text-3xl font-bold text-text-primary tracking-tight">
-            Complete Your Profile
+            {isEditMode ? "Update Your Profile" : "Complete Your Profile"}
           </h1>
-          <p className="text-text-muted">Tell us about yourself so we can personalize your coding journey.</p>
+          <p className="text-text-muted">
+            {isEditMode ? "Keep your details up to date." : "Tell us about yourself so we can personalize your coding journey."}
+          </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
@@ -186,7 +236,6 @@ export const Onboarding: React.FC = () => {
                 <Input label="Last Name" placeholder="Enter your last name" value={formData.lastName} onChange={(e) => handleChange("lastName", e.target.value)} error={errors.lastName} />
               </div>
 
-              {/* MOVED PHONE NUMBER HERE (Before Student Checkbox) */}
               <div ref={phoneRef}>
                  <PhoneVerifier countryCode={formData.countryCode} phoneNumber={formData.phone} onCodeChange={(val) => handleChange("countryCode", val)} onNumberChange={(val) => handleChange("phone", val)} error={errors.phone} />
               </div>
@@ -236,9 +285,7 @@ export const Onboarding: React.FC = () => {
           {/* --- CARD 3: PROFESSIONAL PROFILES --- */}
           <div className="bg-bg-elevated border border-border rounded-xl p-6 md:p-8 shadow-sm relative">
             <div className="absolute top-0 left-0 w-1 h-full bg-purple-500 rounded-l-xl" />
-
             <div className="flex items-center gap-2 mb-6 text-text-primary">
-              {/* Generic "User Profile" Icon */}
               <svg className="text-purple-500" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                  <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
                  <circle cx="12" cy="7" r="4" />
@@ -246,17 +293,9 @@ export const Onboarding: React.FC = () => {
               </svg>
               <h2 className="text-xl font-semibold">Professional Profiles</h2>
             </div>
-
             <div className="space-y-5">
-              <LinkedInVerifier 
-                value={formData.linkedinUsername} 
-                onChange={(val) => handleChange("linkedinUsername", val)} 
-              />
-
-              <GitHubVerifier 
-                value={formData.githubUsername} 
-                onChange={(val) => handleChange("githubUsername", val)} 
-              />
+              <LinkedInVerifier value={formData.linkedinUsername} onChange={(val) => handleChange("linkedinUsername", val)} />
+              <GitHubVerifier value={formData.githubUsername} onChange={(val) => handleChange("githubUsername", val)} />
             </div>
           </div>
 
@@ -265,7 +304,7 @@ export const Onboarding: React.FC = () => {
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/>
               </svg>
-              Save Changes
+              {isEditMode ? "Update Profile" : "Save Profile"}
             </Button>
           </div>
         </form>
