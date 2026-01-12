@@ -5,6 +5,9 @@ import Login from './pages/Login';
 import Navbar from './components/Navbar';
 import { Onboarding } from "./pages/Onboarding";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import About from './pages/About';
+import Contact from './pages/Contact';
+import Policies from './pages/Policy';
 
 function App() {
   return (
@@ -14,7 +17,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
-
+        <Route path="/about" element={<About />} />
+        <Route path="/contact" element={<Contact />} />
+        <Route path="/policies" element={<Policies />} />
         <Route 
           path="/courses" 
           element={

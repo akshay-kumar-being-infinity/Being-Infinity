@@ -1,6 +1,7 @@
 // src/middleware/auth.ts
 import type { Request, Response, NextFunction } from 'express';
 import { verifyJwt, UserPayload } from '../utils/jwt.js';
+import { logger } from '../lib/logger.js';
 
 export interface AuthRequest extends Request {
   user?: UserPayload;
@@ -30,7 +31,7 @@ export const requireAuth = (
     req.user = payload;
     next();
   } catch (error) {
-    console.error('Auth middleware error:', error);
+    logger.error('Auth middleware error:', error);
     res.status(500).json({ message: 'Auth middleware error' });
   }
 };

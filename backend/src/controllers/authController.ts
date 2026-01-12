@@ -2,6 +2,7 @@ import { prisma } from '../lib/prisma.js';
 import { signJwt } from '../utils/jwt.js';
 import { OAuth2Client } from 'google-auth-library';
 import { Request, Response } from 'express';
+import { logger } from '../lib/logger.js';
 
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID!);
 
@@ -76,6 +77,8 @@ export async function googleAuth(req: Request, res: Response): Promise<void> {
       role: user.role,
     });
 
+    logger.info(` User ${user.name} Successfully logged in`)
+    
     res.status(200).json({
       success: true,
       token,
@@ -88,7 +91,7 @@ export async function googleAuth(req: Request, res: Response): Promise<void> {
       },
     });
   } catch (error) {
-    console.error('Google auth error:', error);
+    logger.error('Google auth error:', error);
     res.status(500).json({
       success: false,
       message: 'Authentication failed',
