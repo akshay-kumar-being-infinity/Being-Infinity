@@ -1,8 +1,13 @@
 # Run Backend
 
-To run the backend:
+To run the application:
 
 ```bash
-cd backend
+
+cd frontend
 npm install
-npm run dev
+npm run build
+
+cd ../
+cd backend
+npm run start
