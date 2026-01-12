@@ -1,6 +1,6 @@
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useRef } from 'react';
-import logo from '../assets/logo.png'; 
+import logo from '../assets/logo.png';
 
 export default function Navbar() {
   const location = useLocation();
@@ -20,12 +20,12 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    loadUser(); 
+    loadUser();
     setIsDropdownOpen(false);
 
     const handleUserUpdate = () => loadUser();
     window.addEventListener("user_updated", handleUserUpdate);
-    
+
     return () => window.removeEventListener("user_updated", handleUserUpdate);
   }, [location]);
 
@@ -41,7 +41,7 @@ export default function Navbar() {
 
   const handleLogout = () => {
     localStorage.removeItem('user_info');
-    localStorage.removeItem('token'); 
+    localStorage.removeItem('token');
     setUser(null);
     navigate('/');
   };
@@ -52,7 +52,7 @@ export default function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-border/40 bg-bg-dark/80 backdrop-blur-md transition-all duration-300">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          
+
           {/* --- LEFT: LOGO & Being Infinity --- */}
           <Link to="/" className="flex items-center gap-3 group">
             <div className="relative flex items-center justify-center">
@@ -66,34 +66,50 @@ export default function Navbar() {
 
           {/* --- MIDDLE: NAVIGATION LINKS --- */}
           <div className="hidden md:flex items-center gap-6">
-            <Link 
-              to="/" 
-              className={`text-sm font-medium transition-colors duration-200 ${
-                isActive('/') 
-                  ? 'text-primary-light' 
+            <Link
+              to="/"
+              className={`text-sm font-medium transition-colors duration-200 ${isActive('/')
+                  ? 'text-primary-light'
                   : 'text-text-muted hover:text-text-primary'
-              }`}
+                }`}
             >
               Home
             </Link>
-            
-            <Link 
-              to="/courses" 
-              className={`text-sm font-medium transition-colors duration-200 ${
-                isActive('/courses') 
-                  ? 'text-primary-light' 
+            <Link
+              to="/courses"
+              className={`text-sm font-medium transition-colors duration-200 ${isActive('/courses')
+                  ? 'text-primary-light'
                   : 'text-text-muted hover:text-text-primary'
-              }`}
+                }`}
             >
               Courses
             </Link>
+            <Link
+              to="/about"
+              className={`text-sm font-medium transition-colors duration-200 ${isActive('/about')
+                  ? 'text-primary-light'
+                  : 'text-text-muted hover:text-text-primary'
+                }`}
+            >
+              About
+            </Link>
+            <Link
+              to="/contact"
+              className={`text-sm font-medium transition-colors duration-200 ${isActive('/contact')
+                  ? 'text-primary-light'
+                  : 'text-text-muted hover:text-text-primary'
+                }`}
+            >
+              Contact
+            </Link>
+
           </div>
 
           {/* --- RIGHT: USER ACTIONS --- */}
           <div className="flex items-center">
             {user ? (
               <div className="relative ml-3" ref={dropdownRef}>
-                <button 
+                <button
                   onClick={() => setIsDropdownOpen(!isDropdownOpen)}
                   className={`
                     flex items-center gap-2 pl-1 pr-3 py-1 rounded-full border transition-all duration-200 cursor-pointer
@@ -120,33 +136,33 @@ export default function Navbar() {
 
                     <div className="p-1.5 space-y-0.5">
                       <Link to="/profile" className="flex items-center w-full px-3 py-2.5 text-sm text-text-primary rounded-lg hover:bg-bg-surface hover:text-primary-light transition-colors group">
-                         <svg className="w-4 h-4 mr-3 text-text-muted group-hover:text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                           <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                         </svg>
-                         My Profile
+                        <svg className="w-4 h-4 mr-3 text-text-muted group-hover:text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        My Profile
                       </Link>
-                      
+
                       {/* DYNAMIC SETUP LINK */}
                       <Link to="/onboarding" className="flex items-center w-full px-3 py-2.5 text-sm text-text-primary rounded-lg hover:bg-bg-surface hover:text-primary-light transition-colors group">
-                         {user.isProfileComplete ? (
-                            <svg className="w-4 h-4 mr-3 text-text-muted group-hover:text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                               <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                            </svg>
-                         ) : (
-                            <svg className="w-4 h-4 mr-3 text-text-muted group-hover:text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-                            </svg>
-                         )}
-                         {user.isProfileComplete ? "Update Profile" : "Complete Setup"}
+                        {user.isProfileComplete ? (
+                          <svg className="w-4 h-4 mr-3 text-text-muted group-hover:text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                          </svg>
+                        ) : (
+                          <svg className="w-4 h-4 mr-3 text-text-muted group-hover:text-primary-light" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                          </svg>
+                        )}
+                        {user.isProfileComplete ? "Update Profile" : "Complete Setup"}
                       </Link>
 
                       <div className="h-px bg-border/50 my-1 mx-2" />
 
                       <button onClick={handleLogout} className="flex items-center w-full px-3 py-2.5 text-sm text-red-400 rounded-lg hover:bg-red-500/10 hover:text-red-300 transition-colors cursor-pointer group">
-                         <svg className="w-4 h-4 mr-3 text-red-400/70 group-hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                           <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                         </svg>
-                         Sign Out
+                        <svg className="w-4 h-4 mr-3 text-red-400/70 group-hover:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Sign Out
                       </button>
                     </div>
                   </div>

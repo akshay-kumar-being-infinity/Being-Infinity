@@ -2,6 +2,7 @@ import { Request, Response } from 'express'
 import { prisma } from '../lib/prisma.js';
 import { Prisma } from '../generated/prisma/client.js';
 import { Role } from '../generated/prisma/client.js';
+import { logger } from '../lib/logger.js';
 
 const dummyUsers = [
   { email: 'john.doe@example.com', name: 'John Doe', providerUserId: 'dummy_001' },
@@ -14,10 +15,10 @@ let userIndex = 0;
 
 export async function createRandomUser(req: Request, res: Response) {
   try {
-    console.log('🆕 Creating random user...');
+    logger.info('🆕 Creating random user...');
 
     if (process.env.NODE_ENV !== 'development') {
-      console.log('🚫 Random user creation blocked in production');
+      logger.warn('🚫 Random user creation blocked in production');
       return res.status(403).json({ message: 'Disabled in production' });
     }
 
@@ -34,7 +35,7 @@ export async function createRandomUser(req: Request, res: Response) {
       isActive: true,
     };
 
-    console.log('📝 Generated user data:', userData);
+    logger.info('📝 Generated user data:', userData);
 
     const user = await prisma.user.create({
       data: userData,
@@ -52,7 +53,7 @@ export async function createRandomUser(req: Request, res: Response) {
       },
     });
 
-    console.log(`✅ Created user ID: ${user.id.toString()}, Name: ${user.name}`);
+    logger.info(`✅ Created user ID: ${user.id.toString()}, Name: ${user.name}`);
     
     res.status(201).json({
       success: true,
@@ -64,8 +65,8 @@ export async function createRandomUser(req: Request, res: Response) {
     });
 
   } catch (err) {
-    console.error('❌ Error creating random user:', err);
-    console.error('💡 Error details:', {
+    logger.error('❌ Error creating random user:', err);
+    logger.error('💡 Error details:', {
       message: err instanceof Error ? err.message : 'Unknown error',
       stack: err instanceof Error ? err.stack : undefined,
     });
@@ -103,7 +104,7 @@ export async function getAllUsers(req: Request, res: Response) {
 
     res.status(200).json(serializedUsers);
   } catch (err) {
-    console.error('Error fetching users:', err);
+    logger.error('Error fetching users:', err);
     res.status(500).json({ message: 'Failed to fetch users' });
   }
 }
